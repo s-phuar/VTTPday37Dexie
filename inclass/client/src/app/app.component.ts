@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { CitiesService } from './services/cities.service';
+import { db } from './shared/app.db';
 
+
+//Step 3: AppComponent runs city grabbing method on init
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -8,7 +11,6 @@ import { CitiesService } from './services/cities.service';
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit{
-  title = 'client';
 
   constructor(private citiesService: CitiesService){
     console.info('AppComponent Initialized.....')
@@ -16,11 +18,8 @@ export class AppComponent implements OnInit{
   } 
 
   ngOnInit(): void {
-    
+
   }
-
-
-
 
 
 

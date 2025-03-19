@@ -4,7 +4,7 @@ export interface UploadResult{
 }
 
 
-//city
+//Step 1.5: create City model
 export interface City {
     id?: number, //for indexDB
     code: string,

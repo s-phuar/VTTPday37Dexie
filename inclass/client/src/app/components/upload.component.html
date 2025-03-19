@@ -10,21 +10,15 @@
             <!-- comment -->
             <td><input matInput type="text" size="30" formControlName="comments" placeholder="comments"></td>
         </tr>
-
+        
         <!-- send png for upload -->
         <button mat-raised-button-color="primary" (click)="upload()">Upload</button>
 
     </table>
 
 
-
-
-
-
 </form>
 
-
-
-
-
-
+@for (city of selectedCity; track $index) {
+    <p>{{city}}</p>
+}

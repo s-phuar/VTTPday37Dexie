@@ -2,8 +2,9 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FileUpload } from '../services/fileupload.service';
 import { Router } from '@angular/router';
-import { db } from '../shared/app.db'; //new 
-import { liveQuery } from 'dexie'; //new
+import { db } from '../shared/app.db'; //new ***********
+import { liveQuery } from 'dexie'; //new *****************
+import { City } from '../model';
 
 @Component({
   selector: 'app-upload',
@@ -23,18 +24,49 @@ export class UploadComponent implements OnInit{
 
   //new for dexie/city
   citiesList$ : any
-  selectedCity: string = ''
-
+  selectedCity: string []= []
+  cityList: City[] = []
+  city!: City
+  
   ngOnInit(): void {
     this.createForm()
+    this.loadCities() //for displaying cities in reverse order
+    this.getAllCities()
+    this.getWithPagi()
+    this.getWithKey()
+
   }
 
-  //new for cdexie/dity
+  //new for dexie/city
+  //livequery automatically re-runs whenever the underlying database changes
   loadCities(){
     this.citiesList$ = liveQuery(() => db.cities.reverse().toArray()) //reverse order 4fun
+    this.citiesList$.subscribe((cities: City[]) => {
+      console.info('Reversed cities List:', cities)
+      this.selectedCity = cities.map(city => city.city_name) //for each city, return city name
+    })
   }
 
+  getAllCities(){
+    this.citiesList$ = liveQuery(() => db.getallCities())
+    this.citiesList$.subscribe((cities: City[]) => {
+      console.info('All cities...: ', cities)
+    })
+  }
 
+  getWithPagi(){
+    this.citiesList$ = liveQuery(() => db.getWithPagi())
+    this.citiesList$.subscribe((cities: City[]) => {
+      console.info('All cities pagination...: ', cities)
+    })
+  }
+
+  getWithKey(){
+    this.citiesList$ = liveQuery(() => db.getWithKey())
+    this.citiesList$.subscribe((city: City) => {
+      console.info('ONE cities...: ', city)
+    })
+  }
   //on png image selection, read it as base64 string
   onFileChange(event: any){
     //event.target refers to the 'input' element
@@ -73,7 +105,6 @@ export class UploadComponent implements OnInit{
   upload(){
     console.info('>>>uploading an image....')
     console.log(this.dataUri)
-    console.info('>>>selected city....' + this.selectedCity)
     // stop if dataUri is empty(falsy) "no image selected", ! makes it truthy
     if(!this.dataUri){
       return

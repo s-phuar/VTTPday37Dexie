@@ -26,7 +26,7 @@ public class City {
     public JsonObject toJson(){
         JsonObject json = Json.createObjectBuilder()
             .add("code", getCode())
-            .add("name", getName())
+            .add("city_name", getName())
             .build();
         return json;
     }
